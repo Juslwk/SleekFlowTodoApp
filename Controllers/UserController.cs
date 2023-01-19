@@ -11,11 +11,11 @@ namespace SleekFlowTodo.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly JwtService _jwtService;
+        private readonly ITokenService _jwtService;
 
         public UserController(
             UserManager<IdentityUser> userManager,
-            JwtService jwtService
+            ITokenService jwtService
         )
         {
             _userManager = userManager;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.ModelBuilder;
 using SleekFlowTodo.Data;
 using SleekFlowTodo.Entities;
 using SleekFlowTodo.Services;
@@ -26,7 +27,7 @@ namespace SleekFlowTodo.Controllers
 
         [HttpGet]
         [EnableQuery]
-        public async Task<ActionResult<List<Todo>>> GetAllAsync()
+        public async Task<ActionResult<List<Todo>>> GetAll()
         {
             var result = await _todoService.GetAllAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             if (result.Count == 0)
@@ -36,7 +37,7 @@ namespace SleekFlowTodo.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetTodo")]
         [ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Todo>> GetById(int id)
@@ -50,7 +51,7 @@ namespace SleekFlowTodo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateOrUpdateTodo item)
+        public async Task<IActionResult> Create(CreateOrUpdateTodo item)
         {
             var todo = new Todo()
             {
@@ -68,7 +69,7 @@ namespace SleekFlowTodo.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, CreateOrUpdateTodo item)
+        public async Task<IActionResult> Update(int id, CreateOrUpdateTodo item)
         {
             var todo = await _todoService.GetAsync(id, User.FindFirst(ClaimTypes.NameIdentifier).Value);
             if (todo == null)
@@ -87,7 +88,7 @@ namespace SleekFlowTodo.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var todo = await _todoService.GetAsync(id, User.FindFirst(ClaimTypes.NameIdentifier).Value);
             if (todo == null)

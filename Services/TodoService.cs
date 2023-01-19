@@ -16,7 +16,7 @@ namespace SleekFlowTodo.Services
 
         public async Task<List<Todo>> GetAllAsync(string userId)
         {
-            return await _context.Todos.ToListAsync();
+            return await _context.Todos.Where(todo => todo.UserId == userId).ToListAsync();
         }
 
         public async Task DeleteAsync(Todo todo)
